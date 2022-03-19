@@ -13,8 +13,10 @@ const randomUserSchema = new mongoose.Schema(
 		email : { type: String, unique:true},
 		password : { type: String,required:true},
 		verificationDocument:{type:String},
-		inAppCurrency : {type:String},
-		verified:{type:String}
+		inAppCurrency : {type:Number},
+		verified:{type:String},
+		creditScore:{type:Number}
+
 	}
 )
 

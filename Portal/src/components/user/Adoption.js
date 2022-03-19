@@ -54,11 +54,10 @@ const columns = [
           color="primary"
           onClick={(e) => {
             e.preventDefault();
-            alert('Request Sended')
-            
+            alert('Request Sended')  
           }}
         >
-          Request
+          Show
         </Button>
       );
     }

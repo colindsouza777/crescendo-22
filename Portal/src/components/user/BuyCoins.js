@@ -47,7 +47,7 @@ function BuyCoins(){
 		}
 
 
-        axios.post('https://fa5a-182-237-154-197.ngrok.io/razorpay',{
+        axios.post('https://5a1e-182-237-154-197.ngrok.io/razorpay',{
             amount:localStorage.getItem('coinsBuy')
         }).then(res=>{
             setData(res)
@@ -62,8 +62,10 @@ function BuyCoins(){
 			name: 'Donation',
 			description: 'Thank you for nothing. Please give us some money',
 			handler: function (response) {
-				alert("Payment Successful")
-        setTimeout(()=>{window.location.href='/user/home'},2000)
+				axios.post("http://localhost:5000/user/api/updateCoins",{
+          id_user:localStorage.getItem('id_user'),
+          coins:localStorage.getItem('coinsBuy')
+        })
 			},
 			prefill: {
 				email: 'akmore90@gmail.com',

@@ -65,6 +65,21 @@ function MainNavBar() {
         marginLeft: "10px",
         fontSize: "15px"
     }}>
+        Home
+          </Button>
+        </React.Fragment>
+      )}
+    </PopupState>
+
+    <PopupState variant="popover" popupId="demo-popup-menu">
+      {(popupState) => (
+        <React.Fragment>
+          <Button  href = "/signin" {...bindTrigger(popupState)} style={{
+        color: "white",
+        backgroundColor: "#552a9a",
+        marginLeft: "10px",
+        fontSize: "15px"
+    }}>
         User
           </Button>
         </React.Fragment>

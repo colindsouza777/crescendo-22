@@ -50,35 +50,30 @@ export default function ReportAnimal() {
   let [ImgHash,setImgHash] = React.useState('');
   const [personName, setPersonName] = React.useState([]);
   const [imgName,setImgName] = React.useState('');
-
-  const [username,setName] = React.useState('');
-  const [phone,setPhone] = React.useState('');
-  const [email,setEmail] = React.useState('');
-  const [address,setAddress] = React.useState('');
-  const [city,setCity] = React.useState('');
-  const [pincode,setPincode] = React.useState('');
-  const [state,setState] = React.useState('');
-  const [inAppCurrency,setInAppCurrency] = React.useState('');
-  
-  const Data = ()=>{
-    axios.get('http://localhost:5000/user/api/show')
-    .then(res=>{
-      setName(res.data[0].name);
-      setPhone(res.data[0].phone);
-      setEmail(res.data[0].email);
-      setAddress(res.data[0].address);
-      setCity(res.data[0].city);
-      setPincode(res.data[0].pincode);
-      setState(res.data[0].state);
-
+  const [loaded,setLoaded] = React.useState(true);
+  const [person, setPerson] = React.useState({});
+  useEffect(()=>{
+    if (loaded){
+      axios.post("http://localhost:5000/user/api/show",{
+      "id_user":localStorage.getItem('id_user'),
+    }).then((resu)=>{ 
+        console.log(resu)
+        setLoaded(false)
+        setPerson(resu.data[0]);
     })
-  }
-  const disImageUpload= async (event)=>{
+    }
     
+  },[])
+  
+
+  
+   const documentUpload= async (event)=>{
     try {
       const created = await client.add(event.target.files[0]);
-      setImgHash(created.path);     
       setImgName(event.target.files[0].name);
+      
+      setImgHash("https://ipfs.infura.io:5001/ipfs/"+created.path);
+      
     } catch (error) {
       console.log(error.message);
     }
@@ -86,7 +81,12 @@ export default function ReportAnimal() {
   }
     const handleSubmit = async(event) => {
       event.preventDefault();
+      const id = localStorage.getItem('id_user');
       const data = new FormData(event.currentTarget); 
+      axios.post("http://localhost:5000/user/api/document",{
+        id_user:id,
+        document:ImgHash
+      })
     };
     const Input = styled('input')({
         display: 'none',
@@ -100,6 +100,7 @@ export default function ReportAnimal() {
         }, 1000);
         return () => clearTimeout(timer);
       }, [alertStateTrue]);
+
       useEffect(() => {
         const timer = setTimeout(() => {
           if (alertStateFalse == true){
@@ -112,7 +113,6 @@ export default function ReportAnimal() {
     return (
       
       <ThemeProvider theme={theme}>
-        {Data()}
         <Navbar/>
         { alertStateTrue && <Alert severity="success" sx ={{
           marginTop:"20px", 
@@ -127,7 +127,6 @@ export default function ReportAnimal() {
 
         }}>{"Something Went Wrong"}</Alert>}
         <Container component="main" maxWidth="xs" >
-        
           <CssBaseline />
           <Box
             sx={{
@@ -148,9 +147,8 @@ export default function ReportAnimal() {
                 disabled
                 fullWidth
                 id="name"
-                label="Name"
                 name="name"
-                value={"Akhilesh"}
+                value={person.name}
                 autoFocus
               />
               <TextField
@@ -158,10 +156,8 @@ export default function ReportAnimal() {
                 required
                 disabled
                 fullWidth
-                value={"9029298389"}
+                value={person.phone}
                 id="phone"
-                label="Phone"
-                name="phone"
                 autoFocus
               />
               <TextField
@@ -170,8 +166,7 @@ export default function ReportAnimal() {
                 disabled
                 fullWidth
                 id="state"
-                value={"Maharashtra"}
-                label="State"
+                value={person.state}
                 name="state"
                 autoFocus
               />
@@ -181,8 +176,7 @@ export default function ReportAnimal() {
                 disabled
                 fullWidth
                 id="city"
-                value={"Mumbai"}
-                label="City"
+                value={person.city}
                 name="city"
                 autoFocus
               />
@@ -191,9 +185,8 @@ export default function ReportAnimal() {
                 required
                 disabled
                 fullWidth
-                value={"Suryadashan D ,wing"}
+                value={person.address}
                 id="address"
-                label="Address"
                 name="address"
                 autoFocus
               />
@@ -204,28 +197,26 @@ export default function ReportAnimal() {
                 fullWidth
                 disabled
                 id="pincode"
-                value = {400012}
-                label="Pincode"
+                value = {person.pincode}
                 name="pincode"
                 autoFocus
               />
-      
+            { person.verificationDocument == '' && 
             <label htmlFor="contained-button-file">
-                <Input accept="pdf" id="contained-button-file"  type="file" onChange={disImageUpload}/>
+                <Input accept="pdf" id="contained-button-file"  type="file" onChange={documentUpload}/>
                 <Button variant="contained" component="span">
                 Document Upload
                 </Button>
-            </label>
+            </label>}
             <Button disabled>{imgName != undefined? imgName :''}</Button>
             <TextField
                 margin="normal"
                 required
                 fullWidth
                 id="inAppCurrency"
-                label="Coins"
                 name="coins"
                 disabled
-                value = {localStorage.getItem('coinsBuy')}
+                value = {person.inAppCurrency}
                 autoFocus
               />
               <Grid container>
