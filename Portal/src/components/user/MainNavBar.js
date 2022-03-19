@@ -80,7 +80,7 @@ function MainNavBar() {
         marginLeft: "10px",
         fontSize: "15px"
     }}>
-            CareCenter
+            Care Center
           </Button>
         </React.Fragment>
       )}

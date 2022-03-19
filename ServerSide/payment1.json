@@ -1,0 +1,59 @@
+{
+    "entity": "event",
+    "account_id": "acc_J6p82rR37vkEA7",
+    "event": "payment.captured",
+    "contains": [
+        "payment"
+    ],
+    "payload": {
+        "payment": {
+            "entity": {
+                "id": "pay_J8zE7TDdVMo1aC",
+                "entity": "payment",
+                "amount": 50000,
+                "currency": "INR",
+                "status": "captured",
+                "order_id": "order_J8zDoxs691zNyc",
+                "invoice_id": null,
+                "international": false,
+                "method": "card",
+                "amount_refunded": 0,
+                "refund_status": null,
+                "captured": true,
+                "description": "Thank you for nothing. Please give us some money",
+                "card_id": "card_J8zE7Z3ve8nwFA",
+                "card": {
+                    "id": "card_J8zE7Z3ve8nwFA",
+                    "entity": "card",
+                    "name": "AKHILESH SAMBHAJI MORE",
+                    "last4": "1111",
+                    "network": "Visa",
+                    "type": "debit",
+                    "issuer": null,
+                    "international": false,
+                    "emi": false,
+                    "sub_type": "consumer",
+                    "token_iin": null
+                },
+                "bank": null,
+                "wallet": null,
+                "vpa": null,
+                "email": "akmore90@gmail.com",
+                "contact": "+919029298389",
+                "notes": [],
+                "fee": 1000,
+                "tax": 0,
+                "error_code": null,
+                "error_description": null,
+                "error_source": null,
+                "error_step": null,
+                "error_reason": null,
+                "acquirer_data": {
+                    "auth_code": "951258"
+                },
+                "created_at": 1647701386
+            }
+        }
+    },
+    "created_at": 1647701390
+}

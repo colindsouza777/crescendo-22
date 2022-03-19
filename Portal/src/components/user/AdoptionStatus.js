@@ -9,23 +9,11 @@ import Footer from "./Footer";
 
 const rows = [{
   id:1,
-  name:"dog"
+  name:"German Shepard",
+  age:"5",
+  status:"Pending"
   
-},
-{
-  id:2,
-  disName:"Gujrat Earthquake",
-  disCity:"Ahmedabad",
-  disState:"Gujrat",
-},
-{
-  id:1,
-  disName:"Uttarakhand Floods",
-  disCity:"Dehradun",
-  disState:"Uttarakhand",
-}
-
-]  
+}]  
 
 const columns = [
   {
@@ -38,12 +26,12 @@ const columns = [
     width:300
   },
   {
-    field : 'location',
-    headerName : 'City',
+    field : 'age',
+    headerName : 'Age',
     width:300
   },
   {
-    field : 'Status',
+    field : 'status',
     headerName : 'Status',
     width:300
   },
@@ -76,7 +64,7 @@ function ViewDisaster()  {
     }}>
       <DataGrid
         rowHeight={100}
-        rows={data}
+        rows={rows}
         columns={columns}
         pageSize={5}
       />

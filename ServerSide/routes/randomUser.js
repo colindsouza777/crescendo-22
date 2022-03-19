@@ -85,4 +85,15 @@ router.route('/api/changePassword').post((req,res)=>{
     res.json({password:true});  
 })
 
+router.route('/api/show').get((req,res)=>{
+
+    res.json({
+        name:"Akhilesh",
+        city:"Mumbai",
+        state:"Maharashtra",
+        address:"Suryadashan D wing",
+        pincode:"400053",
+    })
+})
+
 module.exports = router;

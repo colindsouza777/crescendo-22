@@ -12,6 +12,7 @@ import AdoptionStatus from './components/user/AdoptionStatus';
 import ReportStatus from './components/user/ReportStatus';
 import Profile from './components/user/Profile';
 import Store from './components/user/Store'
+import BuyCoins from './components/user/BuyCoins';
 import Logout from './components/user/Logout';
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
       <Route exact path="/user/reportStatus" component={ReportStatus} />
       <Route exact path="/user/adoption" component={Adoption} />
       <Route exact path="/user/store" component={Store} />
+      <Route exact path="/user/buy" component={BuyCoins} />
       <Route exact path="/user/adoptionStatus" component={AdoptionStatus} />
       <Route exact path= "/user/logout" component={Logout} />
       <Route exact path="/forgotpassword" component={Forgotpassword} />

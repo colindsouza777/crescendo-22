@@ -51,7 +51,7 @@ export default function ReportAnimal() {
   const [personName, setPersonName] = React.useState([]);
   const [imgName,setImgName] = React.useState('');
 
-  const [name,setName] = React.useState('');
+  const [username,setName] = React.useState('');
   const [phone,setPhone] = React.useState('');
   const [email,setEmail] = React.useState('');
   const [address,setAddress] = React.useState('');
@@ -60,6 +60,19 @@ export default function ReportAnimal() {
   const [state,setState] = React.useState('');
   const [inAppCurrency,setInAppCurrency] = React.useState('');
   
+  const Data = ()=>{
+    axios.get('http://localhost:5000/user/api/show')
+    .then(res=>{
+      setName(res.data[0].name);
+      setPhone(res.data[0].phone);
+      setEmail(res.data[0].email);
+      setAddress(res.data[0].address);
+      setCity(res.data[0].city);
+      setPincode(res.data[0].pincode);
+      setState(res.data[0].state);
+
+    })
+  }
   const disImageUpload= async (event)=>{
     
     try {
@@ -95,9 +108,11 @@ export default function ReportAnimal() {
         }, 1000);
         return () => clearTimeout(timer);
       }, [alertStateFalse]);
-
+      
     return (
+      
       <ThemeProvider theme={theme}>
+        {Data()}
         <Navbar/>
         { alertStateTrue && <Alert severity="success" sx ={{
           marginTop:"20px", 
@@ -130,27 +145,32 @@ export default function ReportAnimal() {
             <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
               <TextField
                 margin="normal"
-                
+                disabled
                 fullWidth
                 id="name"
                 label="Name"
                 name="name"
+                value={"Akhilesh"}
                 autoFocus
               />
               <TextField
                 margin="normal"
                 required
+                disabled
                 fullWidth
-                id="description"
-                label="Description"
-                name="description"
+                value={"9029298389"}
+                id="phone"
+                label="Phone"
+                name="phone"
                 autoFocus
               />
               <TextField
                 margin="normal"
                 required
+                disabled
                 fullWidth
                 id="state"
+                value={"Maharashtra"}
                 label="State"
                 name="state"
                 autoFocus
@@ -158,8 +178,10 @@ export default function ReportAnimal() {
               <TextField
                 margin="normal"
                 required
+                disabled
                 fullWidth
                 id="city"
+                value={"Mumbai"}
                 label="City"
                 name="city"
                 autoFocus
@@ -167,7 +189,9 @@ export default function ReportAnimal() {
               <TextField
                 margin="normal"
                 required
+                disabled
                 fullWidth
+                value={"Suryadashan D ,wing"}
                 id="address"
                 label="Address"
                 name="address"
@@ -178,20 +202,32 @@ export default function ReportAnimal() {
                 margin="normal"
                 required
                 fullWidth
+                disabled
                 id="pincode"
+                value = {400012}
                 label="Pincode"
                 name="pincode"
                 autoFocus
               />
       
             <label htmlFor="contained-button-file">
-                <Input accept="image/jpeg" id="contained-button-file"  type="file" onChange={disImageUpload}/>
+                <Input accept="pdf" id="contained-button-file"  type="file" onChange={disImageUpload}/>
                 <Button variant="contained" component="span">
-                Photo Upload
+                Document Upload
                 </Button>
             </label>
             <Button disabled>{imgName != undefined? imgName :''}</Button>
-            
+            <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="inAppCurrency"
+                label="Coins"
+                name="coins"
+                disabled
+                value = {localStorage.getItem('coinsBuy')}
+                autoFocus
+              />
               <Grid container>
                 <Grid item xs>
                  
@@ -203,7 +239,7 @@ export default function ReportAnimal() {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Report
+              Update
             </Button>
         
                 </Grid>

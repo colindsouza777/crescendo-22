@@ -12,6 +12,7 @@ import { Container } from '@mui/material';
 import NavBar from './NavBar';
 import { ClassNames } from '@emotion/react';
 import {makeStyles }from "@material-ui/core";
+import Navbar from './NavBar';
 const useStyles = makeStyles((theme) => ({
     root: {
       flexGrow: 1,
@@ -36,23 +37,26 @@ const useStyles = makeStyles((theme) => ({
   }));
 const donateData = [{
         title: '500 Coins',
-        image: 'https://images.indianexpress.com/2018/08/keralafloods-759.jpg',
+        image: 'https://www.nicepng.com/png/detail/103-1038735_game-coins-png-clip-art-free-download-game.png',
         valueRemaining: '$100',
-        desc:"Massive floods across Kerala have killed more than 350 people and displaced more than 800,000. Flood waters have slowly receded in many areas, but we now enter the most difficult phase of recovery: when survivors return to their homes, only to find little remains. And countless families are discovering their homes have been completely destroyed by the flooding and landslides."
+        desc:"You can get  500 coins by 500Rs.",
+        coins:"500",
     },
     {
         
-        title: 'Gujrat Earthquakes',
-        image: 'https://i0.wp.com/www.eastmojo.com/wp-content/uploads/2021/01/EsoL1OkXEAEQl6_.jpg?fit=512%2C288&ssl=1',
+        title: '1000 Coins',
+        image: 'https://www.nicepng.com/png/detail/103-1038735_game-coins-png-clip-art-free-download-game.png',
         valueRemaining: '$100',
-        desc:"A devastating earthquake hit India this morning, killing more than 1,000 (based on news reports) as it toppled buildings and houses. The quake, measuring 6.9 on the Richter Scale and epicentered around 20 km north-east of Bhuj in Gujarat, occurred at 08:46 IST (Indian Standard Time) according to the Indian Seismological Department. "
+        desc:"You can get 1000 coins by 1000Rs.",
+        coins:"1000",
     },
     {
         
-        title: 'Uttarakhand Floods',
-        image: 'https://cdn.dnaindia.com/sites/default/files/styles/full/public/2019/07/05/844548-flash-flood-sarichamshil-village.jpg',
+        title: '10000 coins',
+        image: 'https://www.nicepng.com/png/detail/103-1038735_game-coins-png-clip-art-free-download-game.png',
         valueRemaining: '$100',
-        desc:"The Himalayan states of Uttarakhand and Himachal Pradesh were hit by torrential rain, landslides and flash floods on 14-17th June 2013. The erratic weather conditions have been attributed to early monsoons in Northern India. River Ganges and its major tributaries of Alaknanda and Bhagirathi have swelled up, causing widespread destruction in Uttarakhand"
+        desc:"You can get 10000 coins by 10000Rs.",
+        coins:"10000",
     },
     ]
 
@@ -91,7 +95,7 @@ function Store(){
                         </CardContent>
                     </CardActionArea>
                     <CardActions>
-                    <Button variant="contained" href="/donate"size="large"sx={{backgroundColor:"#FBB03C", '&:hover':{backgroundColor:"white",color:"#FBB03C"}}}>Donate</Button>
+                    <Button variant="contained" onClick={()=>{localStorage.setItem('coinsBuy',number.coins)}} href="/user/buy"size="large"sx={{backgroundColor:"#FBB03C", '&:hover':{backgroundColor:"white",color:"#FBB03C"}}}>Buy</Button>
                     </CardActions>
                     </Card>
             

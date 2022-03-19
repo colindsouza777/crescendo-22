@@ -70,7 +70,7 @@ function Navbar() {
           <PopupState variant="popover" popupId="demo-popup-menu">
       {(popupState) => (
         <React.Fragment>
-          <Button  href = "/ngo/home" {...bindTrigger(popupState)} style={{
+          <Button  href = "/user/home" {...bindTrigger(popupState)} style={{
         color: "white",
         backgroundColor: "#552a9a",
         marginLeft: "10px",
@@ -111,7 +111,7 @@ function Navbar() {
         marginLeft: "10px",
         fontSize: "15px"
     }}>
-            Volenteer
+            Adoption
           </Button>
           <Menu {...bindMenu(popupState)}>
             <MenuItem onClick={()=>{window.location.href="/user/adoption"}}>Adoption Request</MenuItem>

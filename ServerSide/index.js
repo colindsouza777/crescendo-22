@@ -35,7 +35,7 @@ app.use(bodyParser.json({extended:true}))
 
 app.post('/verification', (req, res) => {
 	// do a validation
-	const secret = React_App_Razorpay_Secret
+	const secret = "password";
 
 	console.log(req.body)
 
