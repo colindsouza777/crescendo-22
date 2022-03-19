@@ -17,6 +17,8 @@ import { useState } from 'react';
 import { Alert } from '@mui/material';
 import axios from 'axios';
 import Footer from './Footer';
+import MainNavBar from './MainNavBar';
+
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -33,7 +35,7 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-export default function SignIn() {
+export default function CareSignIn() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -41,11 +43,25 @@ export default function SignIn() {
     // eslint-disable-next-line no-console
       const email =  data.get('email');
       const password = data.get('password');
-      console.log(email)
-      console.log(password)
       if(email == '' && password == ''){
         setAlert(true);
         setTimeout(() => {setAlert(false) ;window.location.href='/'},2000)
+      }
+      else{
+        console.log("here")
+        axios.post('http://localhost:5000/care/api/signin',{
+          email:email,
+          password:password
+        }).then(res=>{
+          console.log(res)
+          if(res.data.auth){
+            localStorage.setItem('token',res.data.token);
+            window.location.href="/carecenter/home"
+          }else{
+            setAlert(true);
+            // setTimeout(() => {setAlert(false) ;window.location.href='/carecenter/signin'},2000)
+          }
+        })
       }
      
   };
@@ -53,6 +69,7 @@ export default function SignIn() {
   
   return (
     <ThemeProvider theme={theme}>
+    <MainNavBar/>
     {AlertState && <Alert severity="error">Something Went Wrong</Alert>}
       <Container component="main" maxWidth="xs">
         <CssBaseline />
@@ -68,7 +85,7 @@ export default function SignIn() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            Care Center Sign In
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
@@ -103,15 +120,15 @@ export default function SignIn() {
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link href="/forgotpassword" variant="body2">
-                  <Links to='/forgotpassword'>
+                <Link href="/care/forgotpassword" variant="body2">
+                  <Links to='/care/forgotpassword'>
                   Forgot password?
                   </Links>
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="/signup" variant="body2">
-                <Links to = '/signup'>
+                <Link href="/carecenter/signup" variant="body2">
+                <Links to = '/carecenter/signup'>
                 {"Don't have an account? Sign Up"}
                 </Links>
                   
@@ -122,7 +139,6 @@ export default function SignIn() {
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
-      <Footer/>
     </ThemeProvider>
   );
 }

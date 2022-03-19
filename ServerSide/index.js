@@ -83,6 +83,16 @@ app.post('/razorpay', async (req, res) => {
 	}
 })
 
+
+const careCenterRouter = require('./routes/careCenter');
+app.use('/care',careCenterRouter);
+
+const randomUserRouter = require('./routes/randomUser');
+app.use('/user',randomUserRouter);
+
+const animalReport = require('./routes/animalReport');
+app.use('/animal',animalReport);
+
 app.listen(process.env.React_App_Server_Port, () => {
 	console.log('Server up at 5000')
 })

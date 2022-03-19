@@ -92,11 +92,11 @@ function Navbar() {
         marginLeft: "10px",
         fontSize: "15px"
     }}>
-        Disaster
+        Animal
           </Button>
           <Menu {...bindMenu(popupState)}>
-            <MenuItem onClick={()=>{window.location.href="/ngo/report"}}>Create Disaster</MenuItem>
-            <MenuItem onClick={()=>{window.location.href="/ngo/view"}}>View Disaster</MenuItem>
+            <MenuItem onClick={()=>{window.location.href="/user/report"}}>Report Animal</MenuItem>
+            <MenuItem onClick={()=>{window.location.href="/user/reportStatus"}}>View Status</MenuItem>
           </Menu>
         </React.Fragment>
       )}
@@ -114,8 +114,8 @@ function Navbar() {
             Volenteer
           </Button>
           <Menu {...bindMenu(popupState)}>
-            <MenuItem onClick={()=>{window.location.href="/ngo/volenteer"}}>Create Volenteer</MenuItem>
-            <MenuItem onClick={()=>{window.location.href="/ngo/volenteerView"}}>View Volenteer</MenuItem>
+            <MenuItem onClick={()=>{window.location.href="/user/adoption"}}>Adoption Request</MenuItem>
+            <MenuItem onClick={()=>{window.location.href="/user/adoptionStatus"}}>View Status</MenuItem>
           </Menu>
         </React.Fragment>
       )}
