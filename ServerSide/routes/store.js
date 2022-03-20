@@ -1,6 +1,9 @@
 const router = require('express').Router();
 let Store = require('../models/StoreModel.model');
 let Product = require('../models/ProductModel.model');
+let User = require('../models/RandomUser.model');
+let CareCenter = require('../models/CareCenter.model');
+
 const bcrypt = require('bcrypt');
 
 
@@ -97,15 +100,37 @@ router.route('/api/getItems').get((req, res) => {
         let temp = [];
         disaster.map(dis=>{
             temp.push({
-                id : ++count,
+                id : dis.id,
+                product_id:dis._id,
                 name : dis.name,
                 description : dis.description,
                 price : dis.price,
                 quantity : dis.quantity,
-                
+                purchased:dis.purchased,
             })
         })
         res.json(temp);
+    })
+    .catch(err=>res.status(400).json('Error: '+err));
+})
+
+
+router.route('/api/purchaseItem').post((req, res) => {
+    console.log("getting items")
+    Store.findOneAndUpdate(
+        {id: req.body.id},
+        { $inc: { "inAppCurrency" : req.body.price } }
+        )
+    .then(disaster=>{
+        console.log(disaster)
+        User.findOneAndUpdate(
+            {id: req.body.user_id},
+            { $inc: { "inAppCurrency" : - req.body.price } }
+            )
+            .then((result) => {
+                console.log(result)
+                res.send("done")
+            })
     })
     .catch(err=>res.status(400).json('Error: '+err));
 })
