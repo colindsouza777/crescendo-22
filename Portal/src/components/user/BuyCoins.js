@@ -47,7 +47,7 @@ function BuyCoins(){
 		}
 
 
-        axios.post('https://5a1e-182-237-154-197.ngrok.io/razorpay',{
+        axios.post('https://2166-182-237-154-197.ngrok.io/razorpay',{
             amount:localStorage.getItem('coinsBuy')
         }).then(res=>{
             setData(res)

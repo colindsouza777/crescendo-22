@@ -93,6 +93,12 @@ app.use('/user',randomUserRouter);
 const animalReport = require('./routes/animalReport');
 app.use('/animal',animalReport);
 
+const animals = require('./routes/careCenterAnimal');
+app.use('/animals',animals);
+
+const adoption = require('./routes/adoptionRequest');
+app.use('/adoption',adoption);
+
 app.listen(process.env.React_App_Server_Port, () => {
 	console.log('Server up at 5000')
 })

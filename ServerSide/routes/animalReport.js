@@ -50,7 +50,7 @@ router.route('/api/create').post((req,res)=>{
     .catch((err)=> res.status(400).json(err));
 });
 
-router.route('/api/show').post(verifyToken,(req,res)=>{
+router.route('/api/show').post((req,res)=>{
 
     Animal.find({reportedId:req.body.reportedId})
     .then(disaster=>{
@@ -68,6 +68,17 @@ router.route('/api/show').post(verifyToken,(req,res)=>{
     })
     .catch(err=>res.status(400).json('Error: '+err));
 });
+
+router.route('/api/showall').post((req,res)=>{
+
+    Animal.find()
+    .then(disaster=>{
+        res.json(disaster);
+    })
+    .catch(err=>res.status(400).json('Error: '+err));
+});
+
+
 
 router.route('/api/delete').post(verifyToken,(req,res)=>{
     Disaster.remove({ _id: req.body.id }, function(err) {  

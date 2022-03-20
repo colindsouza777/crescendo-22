@@ -84,4 +84,13 @@ router.route('/api/changePassword').post((req,res)=>{
     res.json({password:true});  
 })
 
+
+router.route('/api/showall').post((req,res)=>{
+    User.find()
+    .then(users=>{
+        res.send(users);
+    })
+})
+
+
 module.exports = router;

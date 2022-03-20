@@ -1,0 +1,18 @@
+// this is the import statement
+const mongoose = require('mongoose')
+
+// creating the ngo User schema
+const careCenterAnimals = new mongoose.Schema(
+	{
+        centerId : {type:String,required:true},
+		name : { type: String,required:true},
+		age : {type:Number,required:true},
+        type:{type:String,required:true},
+        description:{type:String,required:true},
+        photo:{type:String,required:true}
+	}
+)
+
+const model = mongoose.model('CareCenterAnimalSchema', careCenterAnimals)
+
+module.exports = model

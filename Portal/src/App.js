@@ -14,6 +14,8 @@ import Profile from './components/user/Profile';
 import Store from './components/user/Store'
 import BuyCoins from './components/user/BuyCoins';
 import Logout from './components/user/Logout';
+import ViewAnimal from './components/user/ViewAnimal';
+import ViewReports from './components/carecenter/ViewReports';
 function App() {
   return (
       <BrowserRouter>
@@ -21,6 +23,7 @@ function App() {
     <Switch>
       <Route exact path="/signup" component={SignUp} />
       <Route exact path="/" component={SignIn} />
+      <Route exact path="/homepage" component={HomePage} />
       <Route exact path="/user/home" component={HomePage} />
       <Route exact path='/user/profile' component={Profile}/>
       <Route exact path="/user/report" component={ReportAnimal} />
@@ -29,11 +32,13 @@ function App() {
       <Route exact path="/user/store" component={Store} />
       <Route exact path="/user/buy" component={BuyCoins} />
       <Route exact path="/user/adoptionStatus" component={AdoptionStatus} />
+      <Route exact path="/user/viewanimal" component={ViewAnimal} />
       <Route exact path= "/user/logout" component={Logout} />
       <Route exact path="/forgotpassword" component={Forgotpassword} />
       <Route exact path="/carecenter/signup" component={CareSignUp} />
       <Route exact path="/carecenter/signin" component={CareSignIn} />
       <Route exact path="/carecenter/home" component={HomePage} />
+      <Route exact path="/carecenter/viewReport" component={ViewReports} />
       </Switch>
     </div>
     </BrowserRouter>  

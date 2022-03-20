@@ -21,13 +21,8 @@ const columns = [
     headerName:'ID',  
   },
   {
-    field : 'name',
-    headerName : 'Animal Name',
-    width:300
-  },
-  {
-    field : 'age',
-    headerName : 'Age',
+    field : 'animalId',
+    headerName : 'Animal Id',
     width:300
   },
   {
@@ -43,17 +38,20 @@ function ViewDisaster()  {
   
   let [data,setData] = useState([]);
   useEffect(()=>{
-    axios.get('http://4589-110-44-11-192.ngrok.io/disaster/api/show',{
-      ngoID:localStorage.getItem('id_user')
+    axios.post('http://localhost:5000/adoption/api/show',{
+      adopterId : localStorage.getItem('id_user')
     }).then(res=>{
-      res = res.data.map(item=>item.Record)
-      res = res.map((record)=>{
-        record['id'] = record.ngoId 
-        return record
+      let count = 1;
+      res = res.data;
+      res.map(item=>{
+        item["id"] = count++;
+        return item
       })
       console.log(res);
-      setData(res);
-  })},[])
+      setData(res)
+
+  })
+},[])
   return (
 
     <Box>
@@ -64,7 +62,7 @@ function ViewDisaster()  {
     }}>
       <DataGrid
         rowHeight={100}
-        rows={rows}
+        rows={data}
         columns={columns}
         pageSize={5}
       />
