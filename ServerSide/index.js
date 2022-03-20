@@ -93,6 +93,11 @@ app.use('/user',randomUserRouter);
 const animalReport = require('./routes/animalReport');
 app.use('/animal',animalReport);
 
+const animals = require('./routes/careCenterAnimal');
+app.use('/animals',animals);
+
+const adoption = require('./routes/adoptionRequest');
+app.use('/adoption',adoption);
 const storeRouter = require('./routes/store');
 app.use('/store',storeRouter);
 

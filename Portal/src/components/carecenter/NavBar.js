@@ -70,7 +70,7 @@ function Navbar() {
           <PopupState variant="popover" popupId="demo-popup-menu">
       {(popupState) => (
         <React.Fragment>
-          <Button  href = "/ngo/home" {...bindTrigger(popupState)} style={{
+          <Button  href = "/user/home" {...bindTrigger(popupState)} style={{
         color: "white",
         backgroundColor: "#552a9a",
         marginLeft: "10px",
@@ -111,12 +111,26 @@ function Navbar() {
         marginLeft: "10px",
         fontSize: "15px"
     }}>
-            Volenteer
+            Adoption
           </Button>
           <Menu {...bindMenu(popupState)}>
             <MenuItem onClick={()=>{window.location.href="/user/adoption"}}>Adoption Request</MenuItem>
             <MenuItem onClick={()=>{window.location.href="/user/adoptionStatus"}}>View Status</MenuItem>
           </Menu>
+        </React.Fragment>
+      )}
+    </PopupState>
+    <PopupState variant="popover" popupId="demo-popup-menu">
+      {(popupState) => (
+        <React.Fragment>
+          <Button href='/user/store' {...bindTrigger(popupState)} style={{
+        color: "white",
+        backgroundColor: "#552a9a",
+        marginLeft: "10px",
+        fontSize: "15px"
+    }}>
+            Store
+          </Button>
         </React.Fragment>
       )}
     </PopupState>
@@ -130,7 +144,7 @@ function Navbar() {
                 aria-haspopup="true"
                 aria-expanded={open ? 'true' : undefined}
               >
-        <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
+        <Avatar sx={{ width: 32, height: 32 }}>{localStorage.getItem('username').substring(0,1).toLocaleUpperCase()}</Avatar>
           </IconButton>
         </Tooltip>
       </Box>
@@ -171,9 +185,15 @@ function Navbar() {
       >
         <MenuItem>
           <ListItemIcon>
+          </ListItemIcon>
+          <Link to ="/user/profile">Profile</Link>
+        </MenuItem>
+        <MenuItem>
+          <ListItemIcon>
             <Logout fontSize="small" />
           </ListItemIcon>
-          Logout
+          <Link to='/user/logout'>Logout</Link>
+          
         </MenuItem>
       </Menu>
 

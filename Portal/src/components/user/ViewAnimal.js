@@ -27,9 +27,6 @@ const rows = [{
   },
 ]  
 
-
-
-
 const columns = [
   {
     field:'id',
@@ -37,17 +34,27 @@ const columns = [
   },
   {
     field : 'name',
-    headerName : 'Center Name',
+    headerName : 'Animal Name',
     width:300
   },
   {
-    field : 'address',
-    headerName : 'Address',
+    field : 'age',
+    headerName : 'Age',
+    width:300
+  },
+  {
+    field : 'description',
+    headerName : 'Description',
+    width:300
+  },
+  {
+    field : 'type',
+    headerName : 'Type',
     width:300
   },
   {
     field : 'Request',
-    headerName : 'Check',
+    headerName : 'Request',
     width  : 400,
     renderCell: (cellValues) => {
       return (
@@ -57,12 +64,15 @@ const columns = [
           color="primary"
           onClick={(e) => {
             e.preventDefault();
-            console.log(cellValues)
-            localStorage.setItem('carecenterid',cellValues.row._id)
-            window.location.href='/user/viewanimal'
+            axios.post("http://localhost:5000/adoption/api/create",{
+                animalId:cellValues.row._id,
+                adopterId:localStorage.getItem('id_user'),
+                adoptionCenterId:localStorage.getItem('carecenterid'),
+                documentUrl:localStorage.getItem('document')
+            })
           }}
         >
-          Show
+          Request
         </Button>
       );
     }
@@ -71,25 +81,34 @@ const columns = [
 
 
 
-function Adoption()  {  
+function ViewAnimal()  {  
   
   let [data,setData] = useState([]);
-  let [loading,setLoading] = useState(true);
+  let [document,setDocumentUrl] = useState([]);
   useEffect(()=>{
-    if(loading){
-      axios.post('http://localhost:5000/care/api/showall')
-      .then(res=>{
-        let count = 0;
-        setLoading(false);
+    axios.post('http://localhost:5000/animals/api/show',{
+      id:localStorage.getItem('carecenterid')
+    }).then(res=>{
+        console.log(res);
         res = res.data;
+        let count = 0
         res.map(item=>{
-          item["id"] = count++;
-          return item
+            item["id"] = count++;
+            return item 
         })
+
         setData(res);
+  })
+  axios.post('http://localhost:5000/user/api/show',{
+        id_user:localStorage.getItem('id_user')
+    }).then(res=>{
+        res = res.data[0];
+        console.log(res.verificationDocument);
+        localStorage.setItem('document',res.verificationDocument);
     })
-    }
-    },[])
+    
+
+},[])
   return (
 
     <Box>
@@ -111,4 +130,4 @@ function Adoption()  {
 }
 
 
-export default Adoption;
+export default ViewAnimal;

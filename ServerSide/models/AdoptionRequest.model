@@ -1,0 +1,17 @@
+// this is the import statement
+const mongoose = require('mongoose')
+
+// creating the ngo User schema
+const adoptionRequest = new mongoose.Schema(
+	{
+        adopterId : {type:String,required:true},
+		adoptionCenterId : {type:String,required:true},
+        animalId : {type:String,required:true,uniqe:true},
+        documentUrl : {type:String,required:true},
+        status : {type:String,required:true},
+	}
+)
+
+const model = mongoose.model('AdoptionRequest',adoptionRequest)
+
+module.exports = model

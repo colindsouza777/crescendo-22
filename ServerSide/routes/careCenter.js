@@ -98,5 +98,12 @@ router.route('/api/show').post((req,res)=>{
     })
     .catch(err=>res.status(400).json('Error: '+err));
 });
+router.route('/api/showall').post((req,res)=>{
+    User.find()
+    .then(users=>{
+        res.send(users);
+    })
+})
+
 
 module.exports = router;

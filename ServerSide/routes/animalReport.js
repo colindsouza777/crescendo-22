@@ -50,21 +50,20 @@ router.route('/api/create').post((req,res)=>{
     .catch((err)=> res.status(400).json(err));
 });
 
-router.route('/api/show').post(verifyToken,(req,res)=>{
+router.route('/api/view').get((req,res)=>{
 
-    Animal.find({reportedId:req.body.reportedId})
+    Animal.find()
+    .then(report=>{
+        res.json(report);
+    })
+    .catch(err=>res.status(400).json('Error: '+err));
+});
+
+router.route('/api/showall').post((req,res)=>{
+
+    Animal.find()
     .then(disaster=>{
-        let count = 0;
-        let temp = [];
-        disaster.map(dis=>{
-            temp.push({
-                id : ++count,
-                name : dis.name,
-                state : dis.state,
-                city : dis.city,
-            })
-        })
-        res.json(temp);
+        res.json(disaster);
     })
     .catch(err=>res.status(400).json('Error: '+err));
 });
@@ -135,6 +134,19 @@ router.route('/api/view').get((req,res)=>{
         })
         res.json(temp);
     })
+})
+
+router.route('/api/accept').post((req,res)=>{
+    Animal.findById({_id:req.body.id})
+    .then(animal=>{
+        console.log(animal)
+        animal.takenBy = 'T';
+        animal.acceptedId = req.body.acceptedId;
+        animal.save()
+        .then(()=> res.json('Animal updated!'))
+        .catch((err)=> res.status(400).json(err));
+    })
+    .catch(err=>res.status(400).json('Error: '+err));
 })
 
 module.exports = router
