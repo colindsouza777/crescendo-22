@@ -16,6 +16,12 @@ import BuyCoins from './components/user/BuyCoins';
 import Logout from './components/user/Logout';
 import ViewAnimal from './components/user/ViewAnimal';
 import ViewReports from './components/carecenter/ViewReports';
+
+// import UploadItems from './components/carecenter/BuyItem';
+import UploadItem from './components/stores/UploadItems';
+import BuyItem from './components/carecenter/BuyItem';
+import ReportedAnimals from './components/carecenter/ReportedAnimals';
+import Webcam from './components/user/Webcam';
 function App() {
   return (
       <BrowserRouter>
@@ -24,6 +30,9 @@ function App() {
       <Route exact path="/signup" component={SignUp} />
       <Route exact path="/" component={SignIn} />
       <Route exact path="/homepage" component={HomePage} />
+      {/* <Route exact path="/" component={SignIn} /> */}
+      <Route exact path="/" component={Webcam} />
+      <Route exact path="/carecenter/reportedAnimals" component={ReportedAnimals} />
       <Route exact path="/user/home" component={HomePage} />
       <Route exact path='/user/profile' component={Profile}/>
       <Route exact path="/user/report" component={ReportAnimal} />
@@ -39,6 +48,10 @@ function App() {
       <Route exact path="/carecenter/signin" component={CareSignIn} />
       <Route exact path="/carecenter/home" component={HomePage} />
       <Route exact path="/carecenter/viewReport" component={ViewReports} />
+
+      <Route exact path="/store/upload" component={UploadItem} />
+      <Route exact path="/user/donate" component={BuyItem} />
+      {/* <Route exact path="/carecenter/home" component={HomePage} /> */}
       </Switch>
     </div>
     </BrowserRouter>  

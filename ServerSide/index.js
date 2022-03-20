@@ -98,6 +98,8 @@ app.use('/animals',animals);
 
 const adoption = require('./routes/adoptionRequest');
 app.use('/adoption',adoption);
+const storeRouter = require('./routes/store');
+app.use('/store',storeRouter);
 
 app.listen(process.env.React_App_Server_Port, () => {
 	console.log('Server up at 5000')

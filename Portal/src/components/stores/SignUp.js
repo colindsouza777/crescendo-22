@@ -15,6 +15,8 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useState } from 'react';
 import MainNavBar from './MainNavBar';
+import { create } from "ipfs-http-client";
+import { styled } from '@mui/material/styles';
 
 
 
@@ -31,14 +33,32 @@ function Copyright(props) {
 }
 
 
+const client = create('https://ipfs.infura.io:5001/api/v0');
 
+const Input = styled('input')({
+  display: 'none',
+});
 
 const theme = createTheme();
 
 export default function SignUp() {
 
+  const [ImgHash, setImgHash] = useState("")
+
+  const uploadImage = async (event) => {
+    try {
+      const created = await client.add(event.target.files[0]);
+      setImgHash(created.path);     
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+
+
   let handleSubmit = async(event) => {
     event.preventDefault();
+
+    
     
       const data = new FormData(event.currentTarget);
       const name = data.get('username');
@@ -49,13 +69,17 @@ export default function SignUp() {
       const city = data.get('city');
       const state = data.get('state');
       const pincode = data.get('pincode');
+      const verificationDocument = data.get('verificationDocument');
+      const inAppCurrency = 0;
+      const verified = false;
+      
 
       
       if (name=='' && email=='' && password=='' && phone=='' && address=='') {
         setAlert(true);
         setTimeout(() => {setAlert(false)},2000)
       }else{
-        axios.post("http://localhost:5000/user/api/signup",{
+        axios.post("http://localhost:5000/store/api/signup",{
           name,
           email,
           password,
@@ -63,7 +87,10 @@ export default function SignUp() {
           address,
           city,
           state,
-          pincode
+          pincode,
+          verificationDocument,
+          inAppCurrency,
+          verified
 
         }).then(res=>{
           if(res.data.success){
@@ -107,7 +134,7 @@ export default function SignUp() {
                   required
                   fullWidth
                   id="username"
-                  label="UserName"
+                  label="Organization Name"
                   name="username"
                   autoFocus
                 />
@@ -183,7 +210,12 @@ export default function SignUp() {
                   id="password"
                 />
               </Grid>
-
+              <label style={{marginTop:"20px"}} htmlFor="contained-button-file">
+                <Input  accept="image/jpeg" id="contained-button-file"  type="file" onChange={uploadImage}/>
+                <Button variant="contained" component="span">
+                Photo Upload
+                </Button>
+            </label>
               
         </Grid>
             <Button
