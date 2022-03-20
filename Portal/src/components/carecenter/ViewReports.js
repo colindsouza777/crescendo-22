@@ -6,26 +6,7 @@ import Navbar from "./NavBar";
 import { useState,useEffect } from "react";
 import axios from 'axios';
 import Footer from "./Footer";
-
-const rows = [{
-  id:1,
-  name:"German Shepard",
-  age:"5"
-  
-},
-{
-    id:2,
-    name:"German Shepard",
-    age:"3"
-    
-  },
-  {
-    id:3,
-    name:"German Shepard",
-    age:"1"
-    
-  },
-]  
+import NavBar from "./NavBar";
 
 
 
@@ -37,18 +18,23 @@ const columns = [
   },
   {
     field : 'name',
-    headerName : 'Center Name',
+    headerName : 'Animal Name',
     width:300
   },
   {
-    field : 'address',
-    headerName : 'Address',
+    field : 'city',
+    headerName : 'City',
     width:300
   },
   {
-    field : 'Request',
-    headerName : 'Check',
-    width  : 400,
+    field : 'state',
+    headerName : 'State',
+    width:300
+  },
+  {
+    field : 'photo',
+    headerName : 'Photo',
+    width  : 200,
     renderCell: (cellValues) => {
       return (
         <Button
@@ -58,12 +44,54 @@ const columns = [
           onClick={(e) => {
             e.preventDefault();
             console.log(cellValues)
-            localStorage.setItem('carecenterid',cellValues.row._id)
-            window.location.href='/user/viewanimal'
+            window.open("https://ipfs.infura.io/ipfs/"+cellValues.row.photo, "_blank");
           }}
         >
           Show
         </Button>
+      );
+    }
+  },
+
+  {
+    field : 'Action',
+    headerName : 'Photo',
+    width  : 300,
+    renderCell: (cellValues) => {
+      return (
+        <div>
+        <Button
+          variant="contained"
+          size="medium"
+          color="primary"
+          onClick={(e) => {
+            e.preventDefault();
+
+            axios.post('http://localhost:5000/animal/api/accept',{
+              id:cellValues.row._id,
+              acceptedId:localStorage.getItem('id_user'),
+            }).then(res=>{
+              setTimeout(()=>{
+                window.location.href = '/carecenter/viewReport'
+              },1000)
+            })
+          }}
+        >
+          Accept
+        </Button>
+        <Button
+          variant="contained"
+          size="medium"
+          color="primary"
+          onClick={(e) => {
+            e.preventDefault();
+            console.log(cellValues)
+            
+          }}
+        >
+          Reject
+        </Button>
+        </div>
       );
     }
   }
@@ -75,23 +103,25 @@ function Adoption()  {
   
   let [data,setData] = useState([]);
   let [loading,setLoading] = useState(true);
-  useEffect(()=>{
-    if(loading){
-      axios.post('http://localhost:5000/care/api/showall')
-      .then(res=>{
-        let count = 0;
-        setLoading(false);
-        res = res.data;
-        res.map(item=>{
-          item["id"] = count++;
-          return item
-        })
-        setData(res);
-    })
-    }
-    },[])
-  return (
 
+  useEffect(()=>{
+
+    axios.get("http://localhost:5000/animal/api/view")
+    .then(res=>{
+      res = res.data;
+      let count = 1;
+      res.map((item)=>{
+        if (!(item.takenBy =='T')){
+          item["id"]  = count++;
+        return item
+        }
+      })
+      setData(res);
+    })
+    .catch(err=>console.log(err))
+
+  },[])
+  return (
     <Box>
     <Navbar/>
     <Box sx={{
