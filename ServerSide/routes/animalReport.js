@@ -69,6 +69,20 @@ router.route('/api/show').post(verifyToken,(req,res)=>{
     .catch(err=>res.status(400).json('Error: '+err));
 });
 
+
+router.route('/api/accept').post((req,res)=>{
+    Animal.findById({_id:req.body.id})
+    .then(animal=>{
+        console.log(animal)
+        animal.takenBy = 'T';
+        animal.acceptedId = req.body.acceptedId;
+        animal.save()
+        .then(()=> res.json('Animal updated!'))
+        .catch((err)=> res.status(400).json(err));
+    })
+    .catch(err=>res.status(400).json('Error: '+err));
+})
+
 router.route('/api/delete').post(verifyToken,(req,res)=>{
     Disaster.remove({ _id: req.body.id }, function(err) {  
         if(err){  
@@ -94,6 +108,33 @@ router.route('/api/update').post(verifyToken,(req,res)=>{
         .catch((err)=> res.status(400).json(err));
     })
     .catch(err=>res.status(400).json('Error: '+err));
+})
+
+
+
+router.route('/api/view').get((req,res)=>{
+    Animal.find({})
+    .then(disaster=>{
+        let count = 0;
+        let temp = [];
+        disaster.map(dis=>{
+            if(dis.takenBy == "F"){
+            temp.push({
+                animalId:dis._id,
+                reportedId: dis.reportedId,
+                name:dis.name,
+                description:dis.description,
+                city:dis.city,
+                state:dis.state,
+                address:dis.address,
+                pincode:dis.pincode,
+                photo:dis.photo,
+                taken_by:dis.taken_by,
+            })
+        }
+        })
+        res.json(temp);
+    })
 })
 
 module.exports = router

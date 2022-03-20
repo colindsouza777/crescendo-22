@@ -70,7 +70,7 @@ function ViewDisaster()  {
   
   let [data,setData] = useState([]);
   useEffect(()=>{
-    axios.get('http://4589-110-44-11-192.ngrok.io/disaster/api/show',{
+    axios.get('http:localhost:5000/disaster/api/show',{
       ngoID:localStorage.getItem('id_user')
     }).then(res=>{
       res = res.data.map(item=>item.Record)

@@ -84,4 +84,19 @@ router.route('/api/changePassword').post((req,res)=>{
     res.json({password:true});  
 })
 
+
+router.route('/api/show').post((req,res)=>{
+
+    Adoption.find({adoptionCenterId:req.body.adoptionCenterId})
+    .then(data=>{
+        data = data.map((request, index) => {
+            if(request.status == "Pending"){
+                return request
+            }
+        })
+        res.json(data);
+    })
+    .catch(err=>res.status(400).json('Error: '+err));
+});
+
 module.exports = router;
