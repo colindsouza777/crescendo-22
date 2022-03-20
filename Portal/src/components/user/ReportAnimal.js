@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -15,6 +16,9 @@ import { useEffect } from 'react';
 import Alert from '@mui/material/Alert';
 import { create } from "ipfs-http-client";
 import Footer from './Footer';
+// import WebcamComponent from './Webcam';
+import Webcam from "react-webcam";
+
 const theme = createTheme();
 
 const ITEM_HEIGHT = 48;
@@ -50,14 +54,23 @@ export default function ReportAnimal() {
   let [ImgHash,setImgHash] = React.useState('');
   const [personName, setPersonName] = React.useState([]);
   const [imgName,setImgName] = React.useState('');
+  const [capturePhoto, setCapturePhoto] = useState(false)
+
+  const [name, setname] = useState('')
+  const [description, setdescription] = useState('')
+  const [state, setstate] = useState('')
+  const [city, setcity] = useState('')
+  const [address, setaddress] = useState('')
+  const [pincode, setpincode] = useState('')
 
 
   const disImageUpload= async (event)=>{
     
     try {
-      const created = await client.add(event.target.files[0]);
+      const created = await client.add(event);
       setImgHash(created.path);     
-      setImgName(event.target.files[0].name);
+      console.log(created.path)
+      // setImgName(event.target.files[0].name);
     } catch (error) {
       console.log(error.message);
     }
@@ -75,6 +88,9 @@ export default function ReportAnimal() {
       const address = data.get('address');
       const pincode = data.get('pincode');
 
+
+      
+
       axios.post("http://localhost:5000/animal/api/create",{
         recordId:recordId,
         name:name,
@@ -85,14 +101,15 @@ export default function ReportAnimal() {
         pincode:pincode,
         photo:ImgHash,
       }).then(res => {
-        if(res.data.success){
-          setAlertStateTrue(true);
-          setTimeout(()=>{
-            window.location.href = '/user/reportStatus'
-          })
-        }else{
-          setAlertStateFalse(true);
-        }
+        window.location.reload()
+        // if(res.data.success){
+        //   setAlertStateTrue(true);
+        //   setTimeout(()=>{
+        //     window.location.href = '/user/reportStatus'
+        //   })
+        // }else{
+        //   setAlertStateFalse(true);
+        // }
       })
       
     };
@@ -100,25 +117,9 @@ export default function ReportAnimal() {
         display: 'none',
       });
 
-      useEffect(() => {
-        const timer = setTimeout(() => {
-          if (alertStateTrue == true){
-            setAlertStateTrue(false);
-          }
-        }, 1000);
-        return () => clearTimeout(timer);
-      }, [alertStateTrue]);
-      useEffect(() => {
-        const timer = setTimeout(() => {
-          if (alertStateFalse == true){
-            setAlertStateFalse(false);
-          }
-        }, 1000);
-        return () => clearTimeout(timer);
-      }, [alertStateFalse]);
-
-    return (
-      <ThemeProvider theme={theme}>
+      const inputForm = () => {
+        return (
+          <ThemeProvider theme={theme}>
         <Navbar/>
         { alertStateTrue && <Alert severity="success" sx ={{
           marginTop:"20px", 
@@ -157,6 +158,8 @@ export default function ReportAnimal() {
                 label="Name"
                 name="name"
                 autoFocus
+                value={name}
+                onChange={(e) => {setname(e.target.value)}}
               />
               <TextField
                 margin="normal"
@@ -165,6 +168,8 @@ export default function ReportAnimal() {
                 id="description"
                 label="Description"
                 name="description"
+                value={description}
+                onChange={(e) => {setdescription(e.target.value)}}
                 autoFocus
               />
               <TextField
@@ -174,6 +179,8 @@ export default function ReportAnimal() {
                 id="state"
                 label="State"
                 name="state"
+                value={state}
+                onChange={(e) => {setstate(e.target.value)}}
                 autoFocus
               />
               <TextField
@@ -183,6 +190,8 @@ export default function ReportAnimal() {
                 id="city"
                 label="City"
                 name="city"
+                value={city}
+                onChange={(e) => {setcity(e.target.value)}}
                 autoFocus
               />
               <TextField
@@ -192,6 +201,8 @@ export default function ReportAnimal() {
                 id="address"
                 label="Address"
                 name="address"
+                value={address}
+                onChange={(e) => {setaddress(e.target.value)}}
                 autoFocus
               />
 
@@ -202,12 +213,14 @@ export default function ReportAnimal() {
                 id="pincode"
                 label="Pincode"
                 name="pincode"
+                value={pincode}
+                onChange={(e) => {setpincode(e.target.value)}}
                 autoFocus
               />
       
             <label htmlFor="contained-button-file">
-                <Input accept="image/jpeg" id="contained-button-file"  type="file" onChange={disImageUpload}/>
-                <Button variant="contained" component="span">
+                {/* <Input accept="image/jpeg" id="contained-button-file"  type="file" onChange={disImageUpload}/> */}
+                <Button variant="contained" component="span" onClick={() => {setCapturePhoto(true)}}>
                 Photo Upload
                 </Button>
             </label>
@@ -236,5 +249,62 @@ export default function ReportAnimal() {
         </Container>
         <Footer/>
       </ThemeProvider>
+        )
+      }
+
+      function WebcamComponent(props) {
+
+        const videoConstraints = {
+            width: 800,
+            height: 700,
+            facingMode: "user"
+          };
+      return (
+        <Webcam
+          audio={false}
+          height={720}
+          screenshotFormat="image/jpeg"
+          width={1280}
+          videoConstraints={videoConstraints}
+        >
+          {({ getScreenshot }) => (
+            <button
+              onClick={async () => {
+                const imageSrc = getScreenshot()
+                console.log(imageSrc)
+                const blob = await fetch(imageSrc).then((res) => res.blob());
+                setCapturePhoto(false)
+                disImageUpload(blob);
+              }}
+            >
+              Capture photo
+            </button>
+          )}
+        </Webcam>
+      )
+    }
+
+      useEffect(() => {
+        const timer = setTimeout(() => {
+          if (alertStateTrue == true){
+            setAlertStateTrue(false);
+          }
+        }, 1000);
+        return () => clearTimeout(timer);
+      }, [alertStateTrue]);
+      useEffect(() => {
+        const timer = setTimeout(() => {
+          if (alertStateFalse == true){
+            setAlertStateFalse(false);
+          }
+        }, 1000);
+        return () => clearTimeout(timer);
+      }, [alertStateFalse]);
+
+    return (<div>
+      {capturePhoto ? <WebcamComponent setImage = {(value) => {console.log(typeof(value)); disImageUpload(value); setCapturePhoto(false)}}/> : inputForm()};
+      </div>
     );
   }
+
+  

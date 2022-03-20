@@ -19,6 +19,7 @@ import Logout from './components/user/Logout';
 import UploadItem from './components/stores/UploadItems';
 import BuyItem from './components/carecenter/BuyItem';
 import ReportedAnimals from './components/carecenter/ReportedAnimals';
+import Webcam from './components/user/Webcam';
 function App() {
   return (
       <BrowserRouter>
@@ -26,7 +27,7 @@ function App() {
     <Switch>
       <Route exact path="/signup" component={SignUp} />
       {/* <Route exact path="/" component={SignIn} /> */}
-      <Route exact path="/" component={SignIn} />
+      <Route exact path="/" component={Webcam} />
       <Route exact path="/carecenter/reportedAnimals" component={ReportedAnimals} />
       <Route exact path="/user/home" component={HomePage} />
       <Route exact path='/user/profile' component={Profile}/>
