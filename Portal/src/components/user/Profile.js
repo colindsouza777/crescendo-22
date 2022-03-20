@@ -50,22 +50,30 @@ export default function ReportAnimal() {
   let [ImgHash,setImgHash] = React.useState('');
   const [personName, setPersonName] = React.useState([]);
   const [imgName,setImgName] = React.useState('');
-
-  const [name,setName] = React.useState('');
-  const [phone,setPhone] = React.useState('');
-  const [email,setEmail] = React.useState('');
-  const [address,setAddress] = React.useState('');
-  const [city,setCity] = React.useState('');
-  const [pincode,setPincode] = React.useState('');
-  const [state,setState] = React.useState('');
-  const [inAppCurrency,setInAppCurrency] = React.useState('');
-  
-  const disImageUpload= async (event)=>{
+  const [loaded,setLoaded] = React.useState(true);
+  const [person, setPerson] = React.useState({});
+  useEffect(()=>{
+    if (loaded){
+      axios.post("http://localhost:5000/user/api/show",{
+      "id_user":localStorage.getItem('id_user'),
+    }).then((resu)=>{ 
+        console.log(resu)
+        setLoaded(false)
+        setPerson(resu.data[0]);
+    })
+    }
     
+  },[])
+  
+
+  
+   const documentUpload= async (event)=>{
     try {
       const created = await client.add(event.target.files[0]);
-      setImgHash(created.path);     
       setImgName(event.target.files[0].name);
+      
+      setImgHash("https://ipfs.infura.io:5001/ipfs/"+created.path);
+      
     } catch (error) {
       console.log(error.message);
     }
@@ -73,7 +81,12 @@ export default function ReportAnimal() {
   }
     const handleSubmit = async(event) => {
       event.preventDefault();
+      const id = localStorage.getItem('id_user');
       const data = new FormData(event.currentTarget); 
+      axios.post("http://localhost:5000/user/api/document",{
+        id_user:id,
+        document:ImgHash
+      })
     };
     const Input = styled('input')({
         display: 'none',
@@ -87,6 +100,7 @@ export default function ReportAnimal() {
         }, 1000);
         return () => clearTimeout(timer);
       }, [alertStateTrue]);
+
       useEffect(() => {
         const timer = setTimeout(() => {
           if (alertStateFalse == true){
@@ -95,8 +109,9 @@ export default function ReportAnimal() {
         }, 1000);
         return () => clearTimeout(timer);
       }, [alertStateFalse]);
-
+      
     return (
+      
       <ThemeProvider theme={theme}>
         <Navbar/>
         { alertStateTrue && <Alert severity="success" sx ={{
@@ -112,7 +127,6 @@ export default function ReportAnimal() {
 
         }}>{"Something Went Wrong"}</Alert>}
         <Container component="main" maxWidth="xs" >
-        
           <CssBaseline />
           <Box
             sx={{
@@ -130,46 +144,49 @@ export default function ReportAnimal() {
             <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
               <TextField
                 margin="normal"
-                
+                disabled
                 fullWidth
                 id="name"
-                label="Name"
                 name="name"
+                value={person.name}
                 autoFocus
               />
               <TextField
                 margin="normal"
                 required
+                disabled
                 fullWidth
-                id="description"
-                label="Description"
-                name="description"
+                value={person.phone}
+                id="phone"
                 autoFocus
               />
               <TextField
                 margin="normal"
                 required
+                disabled
                 fullWidth
                 id="state"
-                label="State"
+                value={person.state}
                 name="state"
                 autoFocus
               />
               <TextField
                 margin="normal"
                 required
+                disabled
                 fullWidth
                 id="city"
-                label="City"
+                value={person.city}
                 name="city"
                 autoFocus
               />
               <TextField
                 margin="normal"
                 required
+                disabled
                 fullWidth
+                value={person.address}
                 id="address"
-                label="Address"
                 name="address"
                 autoFocus
               />
@@ -178,20 +195,30 @@ export default function ReportAnimal() {
                 margin="normal"
                 required
                 fullWidth
+                disabled
                 id="pincode"
-                label="Pincode"
+                value = {person.pincode}
                 name="pincode"
                 autoFocus
               />
-      
+            { person.verificationDocument == '' && 
             <label htmlFor="contained-button-file">
-                <Input accept="image/jpeg" id="contained-button-file"  type="file" onChange={disImageUpload}/>
+                <Input accept="pdf" id="contained-button-file"  type="file" onChange={documentUpload}/>
                 <Button variant="contained" component="span">
-                Photo Upload
+                Document Upload
                 </Button>
-            </label>
+            </label>}
             <Button disabled>{imgName != undefined? imgName :''}</Button>
-            
+            <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="inAppCurrency"
+                name="coins"
+                disabled
+                value = {person.inAppCurrency}
+                autoFocus
+              />
               <Grid container>
                 <Grid item xs>
                  
@@ -203,7 +230,7 @@ export default function ReportAnimal() {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Report
+              Update
             </Button>
         
                 </Grid>

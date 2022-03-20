@@ -11,8 +11,10 @@ router.route('/api/signup').post((req,res)=>{
 		const pincode = req.body.pincode;
 		const email = req.body.email;
         const verified = 'F';
-        const inAppCurrency = '0'
+        const inAppCurrency = 0
+        const verificationDocument = ''
 		const password = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync());
+        const creditScore = 0;
 		const newUser = new User({
             name,
             phone,
@@ -22,8 +24,10 @@ router.route('/api/signup').post((req,res)=>{
             pincode,
             email,
             password,
+            verificationDocument,
             inAppCurrency,
-            verified
+            verified,
+            creditScore
         });
         newUser.save()
         .then(()=>res.json({success:true}))
@@ -83,6 +87,34 @@ router.route('/api/changePassword').post((req,res)=>{
         console.log("Password changed");
     })
     res.json({password:true});  
+})
+
+router.route('/api/document').post((req,res)=>{
+    User.findOneAndUpdate({_id:req.body.id_user},{$set:{verificationDocument:req.body.document}})
+    .then(res=>{
+        res.json({document:true})
+    })
+    
+})
+
+
+router.route('/api/updateCoins').post((req,res)=>{
+
+    User.find({_id:req.body.id_user})
+    .then(result=>{
+        
+        const coins = result[0].inAppCurrency + Number(req.body.coins);
+        User.findOneAndUpdate({_id:req.body.id_user},{$set:{inAppCurrency:coins}})
+        .then(result=>{
+            res.json({success:true});      
+        })
+    })    
+})
+
+
+router.route('/api/show').post((req,res)=>{
+    User.find({_id:req.body.id_user})
+    .then(result=>{res.json(result)})
 })
 
 module.exports = router;
