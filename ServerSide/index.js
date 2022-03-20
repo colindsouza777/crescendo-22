@@ -93,6 +93,9 @@ app.use('/user',randomUserRouter);
 const animalReport = require('./routes/animalReport');
 app.use('/animal',animalReport);
 
+const storeRouter = require('./routes/store');
+app.use('/store',storeRouter);
+
 app.listen(process.env.React_App_Server_Port, () => {
 	console.log('Server up at 5000')
 })

@@ -13,13 +13,18 @@ import ReportStatus from './components/user/ReportStatus';
 import Profile from './components/user/Profile';
 import Store from './components/user/Store'
 import Logout from './components/user/Logout';
+
+// import UploadItems from './components/carecenter/BuyItem';
+// import StoreSignUp from './components/stores/UploadItems';
+import StoreSignUp from './components/carecenter/BuyItem';
 function App() {
   return (
       <BrowserRouter>
     <div className="App">
     <Switch>
       <Route exact path="/signup" component={SignUp} />
-      <Route exact path="/" component={SignIn} />
+      {/* <Route exact path="/" component={SignIn} /> */}
+      <Route exact path="/" component={StoreSignUp} />
       <Route exact path="/user/home" component={HomePage} />
       <Route exact path='/user/profile' component={Profile}/>
       <Route exact path="/user/report" component={ReportAnimal} />
@@ -32,6 +37,10 @@ function App() {
       <Route exact path="/carecenter/signup" component={CareSignUp} />
       <Route exact path="/carecenter/signin" component={CareSignIn} />
       <Route exact path="/carecenter/home" component={HomePage} />
+
+      {/* <Route exact path="/store/home" component={HomePage} />
+      <Route exact path="/carecenter/home" component={HomePage} />
+      <Route exact path="/carecenter/home" component={HomePage} /> */}
       </Switch>
     </div>
     </BrowserRouter>  
